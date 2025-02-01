@@ -1698,6 +1698,8 @@ type ObjectReferenceCustom struct {
 	// reserved (4 bytes): Unused. This can be set to any arbitrary value when sent and
 	// MUST be ignored on receipt.
 	_ uint32 `idl:"name:reserved"`
+
+	Size uint32 `idl:"name:size" json:"size"`
 	// pObjectData (variable): This MUST be an array of bytes containing data supplied by
 	// an application or higher-layer protocol.
 	ObjectData []byte `idl:"name:pObjectData" json:"object_data"`
@@ -1731,7 +1733,7 @@ func (o *ObjectReferenceCustom) MarshalNDR(ctx context.Context, w ndr.Writer) er
 		return err
 	}
 	// reserved reserved
-	if err := w.WriteData(uint32(0)); err != nil {
+	if err := w.WriteData(o.Size); err != nil {
 		return err
 	}
 	if o.ObjectData != nil {
